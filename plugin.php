@@ -1,29 +1,19 @@
 <?php
 class ExportPlugin extends Omeka_Plugin_Abstract
 {
-    protected $_hooks = array('install');
- 
-    public function hookInstall()
-    {
-       //no install work needed
-    }
-	
-	protected $_filters = array(
-        'admin_navigation_main',
-    );
-	 /**
-     * Add Export to the admin navigation.
-     * 
-     * @param array $nav
-     * @return array
-     */
-
-    public function filterAdminNavigationMain($nav)
-    {
-        $nav['Export'] = uri('export');
-        return $nav;
-    }
-
+    protected $_hooks = array(
+		'admin_append_to_collections_show_primary'
+	);
+ 	
+	/**
+	* Hook into admin_append_to_collections_show_primary
+	*
+	* @param $collection
+	*/
+	public function hookAdminAppendToCollectionsShowPrimary($collection)
+	{
+		echo "<br /><p><a href=\"/transcribe/admin/export/?c=" . collection('id') . "\">Download PDF file for each collection->item->files transcription</a></p>";
+	}
 	
 }
 $exportPlugin = new ExportPlugin();
