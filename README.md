@@ -5,12 +5,13 @@ Export (plugin for Omeka)
 Summary
 -------
 
-This plugin allows administrators the ability to download a ZIP archive containing
-a single PDF for each file within a collection that contains transcription text. To be
-clear the PDF files are created from file transcription data not item level.
-This plugin was designed specifically for use by the Library of Virginia to extract
-transcription data for each file as a PDF to be imported into a digital asset
-management system adding full text search capability.
+This plugin allows administrators the ability to download a ZIP archive containing a
+single PDF for each file within a collection that contains transcription text. To be
+clear the PDF files are created from single file level transcription data; it does
+not merge all pages of an item’s transcription into one pdf. This plugin was designed
+specifically for use by the Library of Virginia to extract transcription data for each
+file as a PDF to be imported into a digital asset management system adding full text
+search capability.
 
 This plugin is meant to be used in conjuction with Scripto and MediaWiki as orginally
 configured as a crowd-sourcing transcription by the University of Iowa Libraries
@@ -30,7 +31,7 @@ Omeka installation directory.
 
 Ensure your httpd service account has write access to the /plugins/Export/PDF/ directory.
 
-Then install it like any other Omeka plugin and follow the config instructions.
+Then install it like any other Omeka plugin.
 
 
 Usage
