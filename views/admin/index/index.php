@@ -29,8 +29,11 @@ while (loop_items_in_collection(total_items_in_collection())):
 				}
 				//set pdf name
 				$pdfFileName = preg_replace("/.jpg$/", ".pdf", $jpgFileName);
-				//clean <p> and </p> out of the transcription
+				//clean <p>, </p>, <pre>, and </pre> out of the transcription
 				$transcriptionText = preg_replace("/<[\/]*p>/", "", item_file('Scripto', 'Transcription'));
+				$transcriptionText = preg_replace("/<[\/]*pre>/", "", $transcriptionText);
+				//replace &amp; with &
+				$transcriptionText = preg_replace("/&amp;/", "&", $transcriptionText);				
 				//create a pdf containing the transcription
 				$pdf = new FPDF();
 				$pdf->AddPage();
