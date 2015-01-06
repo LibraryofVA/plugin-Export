@@ -13,6 +13,9 @@ specifically for use by the Library of Virginia to extract transcription data fo
 file as a PDF to be imported into a digital asset management system adding full text
 search capability.
 
+The free PHP library FPDF available from http://www.fpdf.org/ makes the PDF creation
+that takes place within this plugin possible.
+
 This plugin is meant to be used in conjuction with Scripto and MediaWiki as orginally
 configured as a crowd-sourcing transcription tool by the University of Iowa Libraries
 (http://diyhistory.lib.uiowa.edu/transcribe/) and later reproduced by the Library of Virginia
