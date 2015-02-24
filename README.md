@@ -28,22 +28,18 @@ Installation
 
 Save entire Export directory to your plugins directory. 
 
-Lines 3 and 11 within the Export/views/adming/index/index.php file refer to the Library
-of Virginia's Omeka installation root "/transcribe" and should be updated to your own
-Omeka installation directory.
-
 Ensure your httpd service account has write access to the /plugins/Export/PDF/ directory.
 
-Then install it like any other Omeka plugin.
+Install it like any other Omeka plugin.
 
 
 Usage
 -----
 
-The plugin will add a link, "Download PDF file for each collection->item->files 
-transcription", to the administrative view of the collection show page. Clicking the 
-link, which might take a moment to load for larger collections, will result in a 
-download prompt of a ZIP archive. The archive will contain a pdf for each Omeka file 
+The plugin will add a link, "Download ZIP file containing a transcription pdf for each 
+file (collection->item->file)", to the administrative view of the collection show page. 
+Clicking the link, which might take a moment to load for larger collections, will result 
+in a download prompt of a ZIP archive. The archive will contain a pdf for each Omeka file 
 that contains transcription information from within the collection. The individual PDF 
 files will be named using the "original file name" for each Omeka file. Any Omeka 
 files that do not contain transcription information will not have a corresponding PDF.

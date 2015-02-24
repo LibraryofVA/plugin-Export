@@ -1,14 +1,11 @@
 <?php
-//PDF directory location, this directory needs to be owned by your httpd service account
-$pdfDirectory = $_SERVER["DOCUMENT_ROOT"] . "/transcribe/plugins/Export/PDF/";
-
 // Loop over all of the .pdf files in the PDF folder
-foreach (glob($pdfDirectory . "*.pdf") as $file) {
+foreach (glob(PDF_EXPORT_DIRECTORY . "*.pdf") as $file) {
 	unlink($file); // unlink deletes a file
 }
 
-//include FPDF 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/transcribe/plugins/Export/fpdf.php");
+//include FPDF
+require_once(FPDF_LOCATION);
 
 //get collection from query string
 $collectionID = $_GET['c'];
@@ -20,7 +17,7 @@ $arrayOfPDFs = array();
 while (loop_items_in_collection(total_items_in_collection())):
 	if (item_has_files()):
 		while(loop_files_for_item()):
-			if (item_file('Scripto', 'Transcription')) {		
+			if (item_file('Scripto', 'Transcription')) {
 				//remove domain and any directory from orginal filename (jpg)
 				if (strpos(item_file('original filename'), '/') !== FALSE) {
 					$jpgFileName = substr(strrchr(item_file('original filename'), "/"), 1);
@@ -33,13 +30,13 @@ while (loop_items_in_collection(total_items_in_collection())):
 				$transcriptionText = preg_replace("/<[\/]*p>/", "", item_file('Scripto', 'Transcription'));
 				$transcriptionText = preg_replace("/<[\/]*pre>/", "", $transcriptionText);
 				//replace &amp; with &
-				$transcriptionText = preg_replace("/&amp;/", "&", $transcriptionText);				
+				$transcriptionText = preg_replace("/&amp;/", "&", $transcriptionText);
 				//create a pdf containing the transcription
 				$pdf = new FPDF();
 				$pdf->AddPage();
 				$pdf->SetFont('Times','',12);
 				$pdf->MultiCell(0,5,$transcriptionText);
-				$content = $pdf->Output($pdfDirectory . $pdfFileName,'F');
+				$content = $pdf->Output(PDF_EXPORT_DIRECTORY . $pdfFileName,'F');
 				//add the pdf name to an array used later to zip the files
 				$arrayOfPDFs[] = $pdfFileName;
 			}
@@ -47,13 +44,13 @@ while (loop_items_in_collection(total_items_in_collection())):
 	endif;
 endwhile;
 
-$result = create_zip($arrayOfPDFs,$pdfDirectory . "collection.zip",$pdfDirectory);
+$result = create_zip($arrayOfPDFs,PDF_EXPORT_DIRECTORY . "collection.zip",PDF_EXPORT_DIRECTORY);
 if($result) {
-	header("Content-type: application/zip"); 
-	header("Content-Disposition: attachment; filename=collection.zip"); 
-    header("Pragma: no-cache"); 
-    header("Expires: 0"); 
-    readfile($pdfDirectory . "collection.zip");
+	header("Content-type: application/zip");
+	header("Content-Disposition: attachment; filename=collection.zip");
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    readfile(PDF_EXPORT_DIRECTORY . "collection.zip");
 }
 
 
