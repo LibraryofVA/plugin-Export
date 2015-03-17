@@ -5,13 +5,11 @@ Export (plugin for Omeka)
 Summary
 -------
 
-This plugin allows administrators the ability to download a ZIP archive containing a
-single PDF for each file within a collection that contains transcription text. To be
-clear the PDF files are created from single file level transcription data; it does
-not merge all pages of an item’s transcription into one pdf. This plugin was designed
-specifically for use by the Library of Virginia to extract transcription data for each
-file as a PDF to be imported into a digital asset management system adding full text
-search capability.
+This plugin allows administrators the ability to download a ZIP archives containing
+either a single PDF for each item or each file that contains transcription text 
+within a collection. This plugin was designed specifically for use by the Library of 
+Virginia to extract transcription data to then be imported into a digital asset 
+management system adding full text search capability.
 
 The free PHP library FPDF available from http://www.fpdf.org/ makes the PDF creation
 that takes place within this plugin possible.
@@ -36,13 +34,18 @@ Install it like any other Omeka plugin.
 Usage
 -----
 
-The plugin will add a link, "Download ZIP file containing a transcription pdf for each 
-file (collection->item->file)", to the administrative view of the collection show page. 
-Clicking the link, which might take a moment to load for larger collections, will result 
-in a download prompt of a ZIP archive. The archive will contain a pdf for each Omeka file 
-that contains transcription information from within the collection. The individual PDF 
-files will be named using the "original file name" for each Omeka file. Any Omeka 
-files that do not contain transcription information will not have a corresponding PDF.
+The plugin will add two links:
+Download ZIP file containing a transcription pdf for each item (collection->item)
+Download ZIP file containing a transcription pdf for each file (collection->item->file), 
+to the administrative view of the collection show page. Clicking either link, which 
+might take a moment to load for larger collections, will result in a download prompt of
+a ZIP archive. The archive, depending on which link has been clicked, will contain one pdf
+for each Omeka item or each file that contains transcription information from within the 
+currently viewed collection. The individual PDF files will be named using the "original
+file name" for each Omeka file. In the case of item level PDFs, the Library of Virginia
+used a ####_####_###_page#.jpg file naming format. The _page# is dropped and only the
+beginning of the file name used for naming of the PDF. Any Omeka files that do not 
+contain transcription information will not have a corresponding PDF.
 
 
 Warning

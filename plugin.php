@@ -4,7 +4,7 @@ class ExportPlugin extends Omeka_Plugin_Abstract
     protected $_hooks = array(
 		'admin_append_to_collections_show_primary'
 	);
-
+ 	
 	/**
 	* Hook into admin_append_to_collections_show_primary
 	*
@@ -12,9 +12,10 @@ class ExportPlugin extends Omeka_Plugin_Abstract
 	*/
 	public function hookAdminAppendToCollectionsShowPrimary($collection)
 	{
-		echo "<br /><p><a href=\"/transcribe/admin/export/?c=" . collection('id') . "\">Download ZIP file containing a transcription pdf for each file (collection->item->file)</a></p>";
+		echo "<br /><p><a href=\"../../export/index/item?c=" . collection('id') . "\">Download ZIP file containing a transcription pdf for each item (collection->item)</a></p>";
+		echo "<p><a href=\"../../export/?c=" . collection('id') . "\">Download ZIP file containing a transcription pdf for each file (collection->item->file)</a></p>";
 	}
-
+	
 }
 $exportPlugin = new ExportPlugin();
 $exportPlugin->setUp();

@@ -9,4 +9,7 @@ class Export_IndexController extends Omeka_Controller_Action
 	public function indexAction()
     {
 	}
+	public function itemAction()
+    {
+	}
 }
