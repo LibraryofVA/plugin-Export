@@ -43,7 +43,7 @@ a ZIP archive. The archive, depending on which link has been clicked, will conta
 for each Omeka item or each file that contains transcription information from within the 
 currently viewed collection. The individual PDF files will be named using the "original
 file name" for each Omeka file. In the case of item level PDFs, the Library of Virginia
-used a ####_####_###_page#.jpg file naming format. The _page# is dropped and only the
+used a ####\_####\_###\_page#.jpg file naming format. The _page# is dropped and only the
 beginning of the file name used for naming of the PDF. Any Omeka files that do not 
 contain transcription information will not have a corresponding PDF.
 
