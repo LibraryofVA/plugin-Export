@@ -11,6 +11,9 @@ foreach (glob(PDF_EXPORT_DIRECTORY . "*.pdf") as $file) {
 $collectionID = $_GET['c'];
 set_current_collection(get_collection_by_id($collectionID));
 
+//create empty array to hold files
+$arrayOfFiles = array();
+
 //create empty array to hold pdf files that we will ZIP
 $arrayOfPDFs = array();
 
@@ -36,15 +39,32 @@ while (loop_items_in_collection(total_items_in_collection())):
 				//replace &amp; with &
 				$transcriptionText = preg_replace("/&amp;/", "&", $transcriptionText);
 				$transcriptionText = iconv('UTF-8', 'windows-1252', $transcriptionText);
-				$pdf->AddPage();
-				$pdf->SetFont('Times','',12);
-				$pdf->Cell(0,5,item('Dublin Core', 'Title'),0,1);
-				$pdf->Cell(0,5,item('Dublin Core', 'Date'),0,1);
-				$pdf->Cell(0,5,$jpgFileName,0,1);
-				$pdf->Cell(0,5,"",0,1);
-				$pdf->MultiCell(0,5,$transcriptionText);
+				$transcriptionTitle = preg_replace("/&#039;/", "'", item('Dublin Core', 'Title'));
+				$transcriptionTitle = iconv('UTF-8', 'windows-1252', $transcriptionTitle);
+				
+				//build array of files
+				$arrayOfFiles[] = array('id' => item_file('id'), 'of' => $jpgFileName, 'title' => $transcriptionTitle, 'date' => item('Dublin Core', 'Date'), 'trans' => $transcriptionText);
 			}
 		endwhile;
+		
+		//sort the array of files
+		$arr2 = array_msort($arrayOfFiles, array('of'=>SORT_ASC));
+		//build pdf page for each file
+		foreach ($arr2 as $key => $row) {
+			$pdf->AddPage();
+			$pdf->SetFont('Times','',12);
+			$pdf->Cell(40,15,$pdf->Image('http://www.virginiamemory.com/transcribe/plugins/Export/logo.png', 10, 10, 35),0,0);
+			$pdf->Cell(0,5,$row['title'],0,1);
+			$pdf->SetX(50); //indent the next cell
+			$pdf->Cell(0,5,$row['date'],0,1);
+			$pdf->SetX(50); //indent the next cell
+			$pdf->Cell(0,5,$row['of'],0,1);
+			$pdf->Cell(0,5,"",0,1);
+			$pdf->MultiCell(0,5,$row['trans']);
+		}
+		//clear arrays
+		$arr2 = array();
+		$arrayOfFiles = array();
 		
 		$content = $pdf->Output(PDF_EXPORT_DIRECTORY . $pdfFileName,'F');
 		//add the pdf name to an array used later to zip the files
@@ -100,5 +120,28 @@ function create_zip($files = array(),$destination = '',$localPdfDirectory = '',$
 	{
 		return false;
 	}
+}
+
+function array_msort($array, $cols) {
+    $colarr = array();
+    foreach ($cols as $col => $order) {
+        $colarr[$col] = array();
+        foreach ($array as $k => $row) { $colarr[$col]['_'.$k] = strtolower($row[$col]); }
+    }
+    $eval = 'array_multisort(';
+    foreach ($cols as $col => $order) {
+        $eval .= '$colarr[\''.$col.'\'],'.$order.',';
+    }
+    $eval = substr($eval,0,-1).');';
+    eval($eval);
+    $ret = array();
+    foreach ($colarr as $col => $arr) {
+        foreach ($arr as $k => $v) {
+            $k = substr($k,1);
+            if (!isset($ret[$k])) $ret[$k] = $array[$k];
+            $ret[$k][$col] = $array[$k][$col];
+        }
+    }
+    return $ret;
 }
 ?>
