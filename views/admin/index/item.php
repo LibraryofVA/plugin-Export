@@ -1,14 +1,11 @@
 <?php
-//PDF directory location, this directory needs to be owned by your httpd service account
-$pdfDirectory = $_SERVER["DOCUMENT_ROOT"] . "/transcribe/plugins/Export/PDF/";
-
 // Loop over all of the .pdf files in the PDF folder
-foreach (glob($pdfDirectory . "*.pdf") as $file) {
+foreach (glob(PDF_EXPORT_DIRECTORY . "*.pdf") as $file) {
 	unlink($file); // unlink deletes a file
 }
 
 //include FPDF 
-require_once($_SERVER["DOCUMENT_ROOT"] . "/transcribe/plugins/Export/fpdf.php");
++require_once(FPDF_LOCATION);
 
 //get collection from query string
 $collectionID = $_GET['c'];
@@ -49,19 +46,19 @@ while (loop_items_in_collection(total_items_in_collection())):
 			}
 		endwhile;
 		
-		$content = $pdf->Output($pdfDirectory . $pdfFileName,'F');
+		$content = $pdf->Output(PDF_EXPORT_DIRECTORY . $pdfFileName,'F');
 		//add the pdf name to an array used later to zip the files
 		$arrayOfPDFs[] = $pdfFileName;
 	endif;
 endwhile;
 
-$result = create_zip($arrayOfPDFs,$pdfDirectory . "collection.zip",$pdfDirectory);
+$result = create_zip($arrayOfPDFs,PDF_EXPORT_DIRECTORY . "collection.zip",PDF_EXPORT_DIRECTORY);
 if($result) {
 	header("Content-type: application/zip"); 
 	header("Content-Disposition: attachment; filename=collection.zip"); 
     header("Pragma: no-cache"); 
     header("Expires: 0"); 
-    readfile($pdfDirectory . "collection.zip");
+    readfile(PDF_EXPORT_DIRECTORY . "collection.zip");
 }
 
 
